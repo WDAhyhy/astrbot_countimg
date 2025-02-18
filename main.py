@@ -13,4 +13,4 @@ class Countimg(Star):
     @filter.command("cimg")
     async def get_countimg(self, event: AstrMessageEvent):
         result = conn.run("ls -l /root/random-api/portrait/NON-H | wc -l", hide=True)
-        yield event.plain_result(result.stdout)
+        yield event.send(result.stdout)
