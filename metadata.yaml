@@ -1,0 +1,6 @@
+name: 咸鱼自用计算img插件 # 这是你的插件的唯一识别名。
+desc: 计算文件中文件数量 # 插件简短描述
+help: 输入 /sese_help 查看关键词回复帮助。 # 插件的帮助信息
+version: v1.0 # 插件版本号。格式：v1.1.1 或者 v1.1
+author: WDAhyhy # 作者
+repo: https://github.com/WDAhyhy/astrbot_countimg # 插件的仓库地址
