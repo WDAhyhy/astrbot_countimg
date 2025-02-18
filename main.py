@@ -19,11 +19,11 @@ class Countimg(Star):
         res += int(result.stdout.strip())
         yield event.plain_result(f"总计{res}张图")
 
-    # @filter.command("cimgh")
-    # async def get_countimgh(self, event: AstrMessageEvent):
-    #     res = 0
-    #     result = conn.run("ls -l /root/random-api/portrait/H | wc -l", hide=True)
-    #     res += int(result.stdout.strip())
-    #     result = conn.run("ls -l /root/random-api/landscape/H | wc -l", hide=True)
-    #     res += int(result.stdout.strip())
-    #     yield event.plain_result(f"总计{res}张涩图")
+    @filter.command("cimgh")
+    async def get_countimgh(self, event: AstrMessageEvent):
+        res = 0
+        result = conn.run("ls -l /root/random-api/portrait/H | wc -l", hide=True)
+        res += int(result.stdout.strip())
+        result = conn.run("ls -l /root/random-api/landscape/H | wc -l", hide=True)
+        res += int(result.stdout.strip())
+        yield event.plain_result(f"总计{res}张涩图")
