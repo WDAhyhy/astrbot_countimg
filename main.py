@@ -39,7 +39,7 @@ class Countimg(Star):
             for i in message_obj.message:
                 if isinstance(i, Image):
                     image_obj = i
-                    yield event.plain_result(str(type(image_obj.file)))
+                    yield event.plain_result(str((image_obj.file)))
                     break
 
             yield CommandResult().file_image(image_obj.file)
