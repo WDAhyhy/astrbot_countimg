@@ -39,12 +39,13 @@ class Countimg(Star):
             for i in message_obj.message:
                 if isinstance(i, Image):
                     image_obj = i
-                    yield CommandResult().file_image(image_obj.file)
+                    # yield CommandResult().file_image(image_obj.file)
+                    yield event.chain_result([Image.fromFileSystem(image_obj.file)])
                     break
 
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
-        yield event.plain_result(inspect.getsource(CommandResult))
+
         sender = event.get_sender_id()
         if sender not in self.img_senders:
             self.img_senders[sender] = True
