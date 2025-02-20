@@ -30,14 +30,14 @@ class Countimg(Star):
         yield event.plain_result(f"总计{res}张涩图")
 
     @filter.event_message_type(filter.EventMessageType.ALL)
-    async def handel_upload(self,message: AstrMessageEvent):
-        sender=message.get_sender_id()
+    async def handel_upload(self,event: AstrMessageEvent):
+        sender=event.get_sender_id()
         if sender  in self.img_senders:
-            message_boj=message.message_obj
+            message_boj=event.message_obj
             yield event.image_result(message_boj)
     @filter.command("upload")
-    async def upload_img(self, message: AstrMessageEvent):
-        sender = message.get_sender_id()
+    async def upload_img(self, event: AstrMessageEvent):
+        sender = event.get_sender_id()
         if sender not in self.img_senders:
             self.img_senders[sender] = True
             yield event.plain_result("请上传图片")
