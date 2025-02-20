@@ -35,7 +35,7 @@ class Countimg(Star):
         if sender  in self.img_senders:
             message_obj=event.message_obj
             with open("img.jpg", "wb") as f:
-                f.write(message_obj.content)
+                f.write(message_obj)
             chain=[Image.open("img.jpg")]
             return CommandResult().file_image("img.jpg")
     @filter.command("upload")
