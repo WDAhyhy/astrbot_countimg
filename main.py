@@ -39,8 +39,9 @@ class Countimg(Star):
             for i in message_obj.message:
                 if isinstance(i, Image):
                     image_obj = i
+                    yield CommandResult().file_image(image_obj.file)
                     break
-            yield CommandResult().file_image(image_obj.file)
+
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
         yield event.plain_result(inspect.getsource(CommandResult))
