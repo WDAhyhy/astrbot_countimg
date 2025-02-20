@@ -38,6 +38,7 @@ class Countimg(Star):
             for i in message_obj.message:
                 if isinstance(i, Image):
                     image_obj = i
+                    yield event.plain_result(type(image_obj))
                     buffer = BytesIO()
                     image_obj.save(buffer, format="JPG")
                     image_bytes = image_obj.getvalue()
