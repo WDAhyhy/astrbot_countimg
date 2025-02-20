@@ -3,6 +3,7 @@ from astrbot.api.message_components import *
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
 from io import BytesIO
+import inspect
 host = "31.56.123.4"
 username = "root"
 conn = Connection(host=host, user=username, connect_kwargs={"password": "Qwer3866373"})
@@ -30,26 +31,27 @@ class Countimg(Star):
         res += int(result.stdout.strip())
         yield event.plain_result(f"总计{res}张涩图")
 
-    @filter.event_message_type(filter.EventMessageType.ALL)
-    async def handel_upload(self,event: AstrMessageEvent):
-        sender=event.get_sender_id()
-        if sender  in self.img_senders:
-            message_obj=event.message_obj
-            for i in message_obj.message:
-                if isinstance(i, Image):
-                    image_obj = i
-                    yield event.plain_result(type(image_obj))
-                    buffer = BytesIO()
-                    image_obj.save(buffer, format="JPG")
-                    image_bytes = image_obj.getvalue()
-                    break
-            with open("img.jpg", "wb") as f:
-                f.write(image_bytes)
-            chain=[Image.open("img.jpg")]
-            yield CommandResult().file_image("img.jpg")
+    # @filter.event_message_type(filter.EventMessageType.ALL)
+    # async def handel_upload(self,event: AstrMessageEvent):
+    #     sender=event.get_sender_id()
+    #     if sender  in self.img_senders:
+    #         message_obj=event.message_obj
+    #         for i in message_obj.message:
+    #             if isinstance(i, Image):
+    #                 image_obj = i
+    #                 yield event.plain_result(type(image_obj))
+    #                 buffer = BytesIO()
+    #                 image_obj.save(buffer, format="JPG")
+    #                 image_bytes = image_obj.getvalue()
+    #                 break
+    #         with open("img.jpg", "wb") as f:
+    #             f.write(image_bytes)
+    #         chain=[Image.open("img.jpg")]
+    #         yield CommandResult().file_image("img.jpg")
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
-        sender = event.get_sender_id()
-        if sender not in self.img_senders:
-            self.img_senders[sender] = True
-            yield event.plain_result("请上传图片")
+        yield event.plain_result(inspect.getsource(Image))
+        # sender = event.get_sender_id()
+        # if sender not in self.img_senders:
+        #     self.img_senders[sender] = True
+        #     yield event.plain_result("请上传图片")
