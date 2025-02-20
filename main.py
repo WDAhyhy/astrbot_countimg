@@ -40,7 +40,8 @@ class Countimg(Star):
                 if isinstance(i, Image):
                     image_obj = i
                     # yield CommandResult().file_image(image_obj.file)
-                    yield event.chain_result([Image.fromFileSystem(image_obj.file)])
+                    yield event.chain_result([Plain("你发的图片")].append(Image.fromFileSystem(image_obj.file)))
+                    del self.img_senders[sender]
                     break
 
     @filter.command("upload")
