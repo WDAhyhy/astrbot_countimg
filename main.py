@@ -4,6 +4,9 @@ from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult,Comma
 from astrbot.api.star import Context, Star, register
 from io import BytesIO
 import inspect
+
+from AstrBot.astrbot.core.message.components import Image
+
 host = "31.56.123.4"
 username = "root"
 conn = Connection(host=host, user=username, connect_kwargs={"password": "Qwer3866373"})
@@ -39,10 +42,12 @@ class Countimg(Star):
             for i in message_obj.message:
                 if isinstance(i, Image):
                     image_obj = i
-                    yield event.plain_result(str((image_obj.file)))
                     break
-
-            yield CommandResult().file_image(image_obj.file)
+            chain = [
+                Plain(f"你发送的图片"),
+                Image.fromFileSystem(Image.file)  # 从URL加载图片
+            ]
+            yield event.chain_result(chain)
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
         yield event.plain_result(inspect.getsource(CommandResult))
