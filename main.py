@@ -2,6 +2,7 @@ from fabric import Connection
 from astrbot.api.message_components import *
 from astrbot.api.event import filter, AstrMessageEvent, MessageEventResult
 from astrbot.api.star import Context, Star, register
+from io import BytesIO
 host = "31.56.123.4"
 username = "root"
 conn = Connection(host=host, user=username, connect_kwargs={"password": "Qwer3866373"})
@@ -37,9 +38,10 @@ class Countimg(Star):
             for i in message_obj.message:
                 if isinstance(i, Image):
                     image_obj = i
+                    image_bytes = image_obj.getvalue()
                     break
             with open("img.jpg", "wb") as f:
-                f.write(image_obj)
+                f.write(image_bytes)
             chain=[Image.open("img.jpg")]
             return CommandResult().file_image("img.jpg")
     @filter.command("upload")
