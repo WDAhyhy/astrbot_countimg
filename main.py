@@ -9,6 +9,7 @@ conn = Connection(host=host, user=username, connect_kwargs={"password": "Qwer386
 class Countimg(Star):
     def __init__(self, context: Context):
         super().__init__(context)
+        self.img_senders={}
 
     @filter.command("cimg")
     async def get_countimg(self, event: AstrMessageEvent):
@@ -27,3 +28,15 @@ class Countimg(Star):
         result = conn.run("ls -l /root/random-api/landscape/H | wc -l", hide=True)
         res += int(result.stdout.strip())
         yield event.plain_result(f"总计{res}张涩图")
+
+    @event_message_type(EventMessageType.ALL)
+    async def handel_upload(self,message: AstrMessageEvent):
+        sender=message.get_sender_id()
+        if sender  in self.img_senders:
+            message_boj=message.message_obj
+            yield event.image_result(message_boj)
+    @filter.command("upload")
+    async def upload_img(self, message: AstrMessageEvent):
+        sender = message.get_sender_id()
+        if sender not in self.img_senders:
+            self.img_senders[sender] = True
