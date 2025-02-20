@@ -45,12 +45,13 @@ class Countimg(Star):
                     break
             chain = [
                 Plain(f"你发送的图片"),
-                Image.fromFileSystem(Image.file)  # 从URL加载图片
+                Image.fromFileSystem(image_obj.file)  # 从URL加载图片
             ]
             yield event.chain_result(chain)
+            del self.img_senders[sender]
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
-        yield event.plain_result(inspect.getsource(CommandResult))
+
         sender = event.get_sender_id()
         if sender not in self.img_senders:
             self.img_senders[sender] = True
