@@ -38,9 +38,11 @@ class Countimg(Star):
     async def handel_upload(self,event: AstrMessageEvent):
         sender=event.get_sender_id()
         if sender  in self.img_senders:
+            yield event.plain_result("1")
             message_obj=event.message_obj
             for i in message_obj.message:
                 if isinstance(i, Image):
+                    event.plain_result("2")
                     image_obj = i
                     chain = [
                         Plain(f"你发送的图片"),
