@@ -33,8 +33,11 @@ class Countimg(Star):
     async def handel_upload(self,event: AstrMessageEvent):
         sender=event.get_sender_id()
         if sender  in self.img_senders:
-            message_boj=event.message_obj
-            yield event.image_result(message_boj)
+            message_obj=event.message_obj
+            with open("img.jpg", "wb") as f:
+                f.write(message_obj.content)
+            chain=[Image.open("img.jpg")]
+            return CommandResult().file_image("img.jpg")
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
         sender = event.get_sender_id()
