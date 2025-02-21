@@ -36,17 +36,30 @@ class Countimg(Star):
         sender=event.get_sender_id()
         if sender  in self.img_senders:
             message_obj=event.message_obj
-            for i in message_obj.message:
-                if isinstance(i, Image):
-                    image_obj = i
-                    # yield CommandResult().file_image(image_obj.file)
-                    yield event.chain_result([Image.fromFileSystem(image_obj.file)])
-                    del self.img_senders[sender]
-                    try:
-                        conn.put(image_obj.file, "/root/alist/upload")
-                    except Exception as e:
-                        yield event.plain_result(f"上传失败:{str(e)}")
-                    break
+            # for i in message_obj.message:
+            #     if isinstance(i, Image):
+            #         image_obj = i
+            #         # yield CommandResult().file_image(image_obj.file)
+            #         yield event.chain_result([Image.fromFileSystem(image_obj.file)])
+            #         del self.img_senders[sender]
+            #         try:
+            #             conn.put(image_obj.file, "/root/alist/upload")
+            #             yield event.plain_result("上传成功")
+            #         except Exception as e:
+            #             yield event.plain_result(f"上传失败:{str(e)}")
+            #         break
+            while isinstance(message_obj.message, Image):
+                image_obj = message_obj.message
+                # yield CommandResult().file_image(image_obj.file)
+                yield event.chain_result([Image.fromFileSystem(image_obj.file)])
+                del self.img_senders[sender]
+                try:
+                    conn.put(image_obj.file, "/root/alist/upload")
+                    yield event.plain_result("上传成功")
+                except Exception as e:
+                    yield event.plain_result(f"上传失败:{str(e)}")
+            yield event.plain_result("检测到非图片信息，已终止上传")
+
 
     @filter.command("upload")
     async def upload_img(self, event: AstrMessageEvent):
