@@ -69,7 +69,7 @@ class Countimg(Star):
             self.img_senders[sender] = True
             yield event.plain_result("请上传图片")
 
-    def get_file_hash(,self,file_path):
+    def get_file_hash(self,file_path):
         """计算文件的哈希值（使用SHA256）"""
         hash_sha256 = hashlib.sha256()
         with open(file_path, 'rb') as f:
