@@ -44,7 +44,7 @@ class Countimg(Star):
                     image_obj = i
                     # yield CommandResult().file_image(image_obj.file)
                     yield event.chain_result([Image.fromFileSystem(image_obj.file)])
-                    del self.img_senders[sender]
+
                     try:
                         conn.put(image_obj.file, "/root/alist/upload")
                         yield event.plain_result("上传成功")
