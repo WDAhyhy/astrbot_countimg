@@ -57,7 +57,10 @@ class Countimg(Star):
                             file_extension = os.path.splitext(file_name)[1]
                             file_hash = self.get_file_hash(image_obj.file)
                             new_file_name = f"{file_hash}{file_extension}"
-                            remote_file_path = os.path.join("/root/alist/upload/", new_file_name)
+                            remote_file_path = os.path.join("/root/alist/upload/", sender)
+                            conn.run(f"mkdir -p {remote_file_path}")
+                            remote_file_path = os.path.join(remote_file_path, new_file_name)
+                            
                             conn.put(image_obj.file, remote_file_path)
                             yield event.plain_result("上传成功")
                         except Exception as e:
