@@ -5,6 +5,9 @@ from astrbot.api.star import Context, Star, register
 import os
 import inspect
 import hashlib
+
+from AstrBot.astrbot.core.message.components import Plain
+
 host = "31.56.123.4"
 username = "root"
 conn = Connection(host=host, user=username, connect_kwargs={"password": "Qwer3866373"})
@@ -38,8 +41,9 @@ class Countimg(Star):
         if sender  in self.img_senders:
             message_obj=event.message_obj
             for i in message_obj.message:
-                if "暂停" in i:
+                if isinstance(i, Plain) and "暂停" in i:
                     del self.img_senders[sender]
+                    yield event.plain_result("已暂停上传")
                     break
                 if isinstance(i, Image):
                     image_obj = i
