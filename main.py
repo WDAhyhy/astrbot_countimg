@@ -39,29 +39,30 @@ class Countimg(Star):
     async def handel_upload(self,event: AstrMessageEvent):
         sender=event.get_sender_id()
         if sender  in self.img_senders:
-            message_obj=event.message_obj
-            for i in message_obj.message:
-                if isinstance(i, Plain) and "暂停" in i:
-                    del self.img_senders[sender]
-                    yield event.plain_result("已暂停上传")
-                    break
-                if isinstance(i, Image):
-                    image_obj = i
-                    # yield CommandResult().file_image(image_obj.file)
-                    yield event.chain_result([Image.fromFileSystem(image_obj.file)])
+            if  "暂停" in event.message_str.strip():
+                del self.img_senders[sender]
+                yield event.plain_result("已暂停上传")
+            else:
+                message_obj=event.message_obj
+                for i in message_obj.message:
 
-                    try:
-                        # 获取文件的扩展名和哈希值
-                        file_name = os.path.basename(image_obj.file)
-                        file_extension = os.path.splitext(file_name)[1]
-                        file_hash = self.get_file_hash(image_obj.file)
-                        new_file_name = f"{file_hash}{file_extension}"
-                        remote_file_path = os.path.join("/root/alist/upload/", new_file_name)
-                        conn.put(image_obj.file, remote_file_path)
-                        yield event.plain_result("上传成功")
-                    except Exception as e:
-                        yield event.plain_result(f"上传失败:{str(e)}")
-                    break
+                    if isinstance(i, Image):
+                        image_obj = i
+                        # yield CommandResult().file_image(image_obj.file)
+                        yield event.chain_result([Image.fromFileSystem(image_obj.file)])
+
+                        try:
+                            # 获取文件的扩展名和哈希值
+                            file_name = os.path.basename(image_obj.file)
+                            file_extension = os.path.splitext(file_name)[1]
+                            file_hash = self.get_file_hash(image_obj.file)
+                            new_file_name = f"{file_hash}{file_extension}"
+                            remote_file_path = os.path.join("/root/alist/upload/", new_file_name)
+                            conn.put(image_obj.file, remote_file_path)
+                            yield event.plain_result("上传成功")
+                        except Exception as e:
+                            yield event.plain_result(f"上传失败:{str(e)}")
+                        break
 
 
 
